@@ -81,6 +81,7 @@ const SelectLoad = () => {
             disabled
           />
         </Box>
+        <Box sx={{display:'flex', alignItems:'center', width:"100%", justifyContent:'center'}}>
         <Box
           sx={{
             border: "2px solid #AABFAB",
@@ -111,8 +112,8 @@ const SelectLoad = () => {
             sx={{
               display: "flex",
               flexWrap: "wrap",
-              gap: "24px 70px",
-              justifyContent: "center",
+              gap: "24px 10px",
+              justifyContent: "space-between",
             }}
           >
             <Box
@@ -153,6 +154,8 @@ const SelectLoad = () => {
                   fontWeight: 800,
                   fontSize: "15px",
                   color: "#539F58",
+                  width: "120px",
+                  textAlign:'center'
                 }}
               >
                 Light Load
@@ -196,6 +199,8 @@ const SelectLoad = () => {
                   fontWeight: 800,
                   fontSize: "15px",
                   color: "#539F58",
+                  width: "120px",
+                  textAlign:'center'
                 }}
               >
                 Ventilation Load
@@ -239,6 +244,8 @@ const SelectLoad = () => {
                   fontWeight: 800,
                   fontSize: "15px",
                   color: "#539F58",
+                  width: "120px",
+                  textAlign:'center'
                 }}
               >
                 System Load
@@ -282,6 +289,8 @@ const SelectLoad = () => {
                   fontWeight: 800,
                   fontSize: "15px",
                   color: "#539F58",
+                  width: "120px",
+                  textAlign:'center'
                 }}
               >
                 Pump Load
@@ -325,15 +334,63 @@ const SelectLoad = () => {
                   fontWeight: 800,
                   fontSize: "15px",
                   color: "#539F58",
+                  width: "120px",
+                  textAlign:'center'
                 }}
               >
                 Air Conditioner Load
               </Typography>
             </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "4px",
+              }}
+            >
+              <Box
+                onClick={() => handleLoadClick("others")}
+                sx={{
+                  height: "67px",
+                  width: "96px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  bgcolor: "#539F58",
+                  borderRadius: "15px",
+                  cursor: "pointer",
+                  "&:hover": {
+                    bgcolor: "#467a46",
+                  },
+                }}
+              >
+                <Box
+                  component={"img"}
+                  src={VentilationLoad}
+                  sx={{ height: "45px", width: "45px" }}
+                />
+              </Box>
+              <Typography
+                sx={{
+                  fontFamily: "Lato, sans-serif",
+                  fontWeight: 800,
+                  fontSize: "15px",
+                  color: "#539F58",
+                  width: "120px",
+                  textAlign:'center'
+                }}
+              >
+                Other Appliances
+              </Typography>
+            </Box>
           </Box>
         </Box>
+        </Box>
         <Box
-          sx={{ display: "flex", flexDirection: "column", paddingTop: "30px" }}
+          sx={{ display: "flex", flexDirection: "column", paddingTop: "30px", paddingBottom:"20px" }}
         >
           <ButtonComponent
             variant="secondary"

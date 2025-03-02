@@ -10,11 +10,17 @@ import SelectLoad from './pages/SelectLoad';
 import Preview from './pages/Preview';
 
 function App() {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
+  // const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const isMobileDevice = () => {
+    return /Mobi|Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) || window.innerWidth <= 1024;
+  };
+  
+  const [isMobile, setIsMobile] = useState(isMobileDevice());
+  // const [isMobile, setIsMobile] = useState(window.innerWidth <= 1025);
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      // setIsMobile(window.innerWidth <= 1025);
+      setIsMobile(isMobileDevice());
     };
 
     window.addEventListener('resize', handleResize);

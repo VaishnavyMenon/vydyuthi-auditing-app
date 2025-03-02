@@ -77,7 +77,7 @@ const Preview = () => {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap:"15px",paddingTop: "30px", paddingBottom:"20px"}}>
         <ExcelGenerator jsonData={forms} />
         <ButtonComponent variant="secondary" onClick={handleStart}>
           Start New Auditing

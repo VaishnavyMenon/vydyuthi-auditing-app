@@ -45,7 +45,7 @@ const FacilityDetails = () => {
   return (
     <Box
       sx={{
-        padding: "45px 30px 40px 40px",
+        padding: "45px 40px 10px 40px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -86,7 +86,7 @@ const FacilityDetails = () => {
           <ReusableInputField
             label="Facility Type"
             variant="dropdown"
-            options={["Industry", "Residential"]}
+            options={["Commercial", "Industry", "Residential"]}
             value={formData.facilityType}
             onChange={(value) => handleInputChange("facilityType")(value)}
             fullWidth
@@ -136,7 +136,7 @@ const FacilityDetails = () => {
           />
         </Box>
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+      <Box sx={{ display: "flex", flexDirection: "column", marginTop: "25px", paddingBottom:"20px" }}>
         <ButtonComponent
           variant="primary"
           onClick={handleNext}

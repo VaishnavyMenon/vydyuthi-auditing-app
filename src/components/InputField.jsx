@@ -1,27 +1,26 @@
 import React from 'react';
-import { TextField, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import { 
+  TextField,  
+  Autocomplete,
+  InputLabel,
+} from '@mui/material';
 
 const ReusableInputField = ({ 
   variant = 'text', 
   label, 
   options = [], 
   multiline = false, 
-  rows = 4,
-  value = '',
-  onChange,
+  rows = 4, 
+  value = '', 
+  onChange, 
+  error,
+  helperText,
   ...props 
 }) => {
-
-  const handleChange = (event) => {
-    if (onChange) {
-      onChange(event.target.value);
-    }
-  };
-  
   const inputStyles = {
     '& .MuiOutlinedInput-root': {
       borderColor: '#AABFAB', // Border color
-      height: '50px', // Height of the text field
+      height: variant !== 'multiline' ? '50px' : 'auto', // Height of the text field
       borderRadius: '10px', // Border radius
       bgcolor: '#FFFFFF', // Background color
     },
@@ -45,42 +44,76 @@ const ReusableInputField = ({
     },
   };
 
-  // Render different types of input fields based on the variant
-  if (variant === 'dropdown') {
+  // For standard text or number input
+  if (variant === 'text' || variant === 'number') {
     return (
-      <FormControl fullWidth>
-        <InputLabel>{label}</InputLabel>
-        <Select
-          value={value || ''}
-          onChange={handleChange}
-          {...props}
-          label={label}
-          sx={inputStyles}
-        >
-          {options.map((option, index) => (
-            <MenuItem key={index} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      <TextField
+        value={value || ''}
+        onChange={(e) => onChange(e.target.value)}
+        label={label}
+        fullWidth
+        variant="outlined"
+        multiline={multiline}
+        rows={multiline ? rows : 1}
+        type={variant === 'number' ? 'number' : 'text'}
+        sx={inputStyles}
+        error={error}
+        helperText={helperText}
+        {...props}
+      />
+    );
+  }
+  
+  // For multiline text areas
+  if (variant === 'multiline') {
+    return (
+      <TextField
+        value={value || ''}
+        onChange={(e) => onChange(e.target.value)}
+        label={label}
+        fullWidth
+        variant="outlined"
+        multiline
+        rows={rows}
+        sx={inputStyles}
+        error={error}
+        helperText={helperText}
+        {...props}
+      />
     );
   }
 
-  return (
-    <TextField
-      value={value || ''}
-      onChange={handleChange}
-      {...props}
-      label={label}
-      fullWidth
-      variant="outlined"
-      multiline={multiline}
-      rows={multiline ? rows : 1}
-      type={variant === 'number' ? 'number' : 'text'}
-      sx={inputStyles}
-    />
-  );
+  // For dropdown with free text entry (combobox)
+  if (variant === 'dropdown') {
+    return (
+      <Autocomplete
+        freeSolo
+        options={options}
+        value={value || ''}
+        onChange={(event, newValue) => onChange(newValue || '')}
+        onInputChange={(event, newInputValue) => {
+          if (event && event.type === 'change') {
+            onChange(newInputValue || '');
+          }
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={label}
+            fullWidth
+            variant="outlined"
+            error={error}
+            helperText={helperText}
+            sx={inputStyles}
+          />
+        )}
+        {...props}
+      />
+    );
+  }
+
+
+  return null;
 };
 
 export default ReusableInputField;

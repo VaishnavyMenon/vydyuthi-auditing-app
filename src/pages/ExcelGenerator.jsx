@@ -6,10 +6,10 @@ import ButtonComponent from "../components/Button";
 const ExcelGenerator = ({ jsonData }) => {
   const generateExcel = async () => {
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Energy Audit");
+    const worksheet = workbook.addWorksheet(`Load Matrix`);
 
     // Define load categories
-    const loadCategories = ["light", "ventilation", "system", "pump", "airConditioner"];
+    const loadCategories = ["light", "ventilation", "system", "pump", "airConditioner", "others"];
 
     // Extract unique load names in a case-insensitive manner
     let uniqueLoadNamesMap = new Map(); // Stores original case for display
@@ -101,9 +101,9 @@ const ExcelGenerator = ({ jsonData }) => {
                   let lowerCaseName = load.loadName.toLowerCase();
                   let index = firstRow.indexOf(uniqueLoadNamesMap.get(lowerCaseName)); // Find column position using mapped name
                   if (index !== -1) {
-                    rowData[index] = load.quantity;
-                    rowData[index + 1] = load.hoursPerDay;
-                    rowData[index + 2] = load.quantity * load.hoursPerDay; // Total Hrs
+                    rowData[index] = Number(load.quantity);
+                    rowData[index + 1] = Number(load.hoursPerDay);
+                    rowData[index + 2] = Number(load.quantity) * Number(load.hoursPerDay); // Total Hrs
                   }
                 });
               });
@@ -127,7 +127,7 @@ const ExcelGenerator = ({ jsonData }) => {
     // Generate and download the Excel file
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-    saveAs(blob, "Energy_Audit.xlsx");
+    saveAs(blob, `${jsonData.facilityDetails.facilityName} - Energy Audit.xlsx`);
   };
 
   return (

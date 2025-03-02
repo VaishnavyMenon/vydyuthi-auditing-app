@@ -59,7 +59,7 @@ export const formSlice = createSlice({
       }
       let room = floor.rooms.find(r => r.roomName === roomName);
       if (!room) {
-        room = { roomName, loads: { light: [], ventilation: [], system: [], pump: [], airConditioner: [] } };
+        room = { roomName, loads: { light: [], ventilation: [], system: [], pump: [], airConditioner: [], others:[] } };
         floor.rooms.push(room);
       }
       if (room.loads[loadType]) {

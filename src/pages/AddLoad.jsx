@@ -12,10 +12,36 @@ const AddLoad = () => {
   const { loadType } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [options, setOptions] = useState([]);
 
   const { building, floorNumber, roomName } = useSelector(
     (state) => state.form.addDetails
   );
+
+  const forms = useSelector((state) => state.form);
+
+  let uniqueLoadNamesMap = new Map();
+
+  useEffect(() => {
+    const category = loadType.toLowerCase();
+    forms.buildings.forEach(building => {
+      building.floors.forEach(floor => {
+        floor.rooms.forEach(room => {
+          if (room.loads[category] && room.loads[category].length > 0) {
+            room.loads[category].forEach(loadGroup => {
+              loadGroup.forEach(load => {
+                let lowerCaseName = load.loadName.toLowerCase();
+                if (!uniqueLoadNamesMap.has(lowerCaseName)) {
+                  uniqueLoadNamesMap.set(lowerCaseName, load.loadName); // Store first occurrence of the name with original case
+                }
+              });
+            });
+          }
+        });
+      });
+    });
+    setOptions(Array.from(uniqueLoadNamesMap.values()));
+  }, []);
   const existingLoads = useSelector((state) => {
     const buildingData = state.form.buildings.find((b) => b.name === building);
     const floorData = buildingData?.floors.find(
@@ -24,7 +50,7 @@ const AddLoad = () => {
     const roomData = floorData?.rooms.find((r) => r.roomName === roomName);
     return roomData?.loads[loadType] || [];
   });
-  const [errors, setErrors] = useState({}); // Store errors for fields
+  const [errors, setErrors] = useState({});
   const [loads, setLoads] = useState(
     existingLoads.length > 0
       ? existingLoads
@@ -37,7 +63,6 @@ const AddLoad = () => {
           },
         ]
   );
-
   useEffect(() => {
     if (existingLoads.length > 0) {
       setLoads(existingLoads[0]);
@@ -111,6 +136,8 @@ const AddLoad = () => {
         return "Pump Load";
       case "airConditioner":
         return "Air Conditioner Load";
+      case "others":
+        return "Other Load";
       default:
         return "Load";
     }
@@ -120,7 +147,7 @@ const AddLoad = () => {
   return (
     <Box
       sx={{
-        padding: "45px 30px 40px 40px",
+        padding: "45px 30px 10px 40px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -171,12 +198,11 @@ const AddLoad = () => {
               }}
             >
               <ReusableInputField
-                variant="text"
+                variant="dropdown"
                 label="Add load name"
-                value={load.loadName}
-                onChange={(value) =>
-                  handleInputChange(index, "loadName")(value)
-                }
+                options={options}
+                value={load.loadName} 
+                onChange={(value) => handleInputChange(index, "loadName")(value)}
                 error={!!errors[index]?.loadName}
                 helperText={errors[index]?.loadName || ""}
               />
@@ -232,7 +258,7 @@ const AddLoad = () => {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+      <Box sx={{ display: "flex", flexDirection: "column", marginTop: "25px", paddingBottom:"20px" }}>
         <ButtonComponent variant="primary" onClick={handleSave}>
           Save
         </ButtonComponent>

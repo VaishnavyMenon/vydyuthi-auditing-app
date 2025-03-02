@@ -58,7 +58,7 @@ const BasicBuilding = () => {
   return (
     <Box
       sx={{
-        padding: "45px 30px 40px 40px",
+        padding: "45px 30px 10px 40px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -141,7 +141,7 @@ const BasicBuilding = () => {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+      <Box sx={{ display: "flex", flexDirection: "column", marginTop: "25px", paddingBottom:"20px"}}>
         <ButtonComponent
           variant="primary"
           disabled={
